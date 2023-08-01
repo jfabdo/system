@@ -14,7 +14,7 @@ from menus import Menus
 
 import random
 
-class Game(ShowBase):
+class wizu(ShowBase):
     def __init__(self,manager,size):
         # self.state = state
         ShowBase.__init__(self)
