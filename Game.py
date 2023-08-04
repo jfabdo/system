@@ -10,16 +10,16 @@ from direct.gui.DirectGui import *
 
 # from GameObject import *
 
-from menus import Menus
+# from menus import Menus
 
 import random
 
-class wizu(ShowBase):
+class Game(ShowBase):
     def __init__(self,manager,size):
         # self.state = state
         ShowBase.__init__(self)
-        self.menus = Menus()
-        self.menus.setdesktop(manager,size=size)
+        # self.menus = Menus()
+        # self.menus.setdesktop(manager,size=size)
         self.setupPanda()
         self.setscene()
         # self.setkeys()
@@ -113,9 +113,9 @@ class wizu(ShowBase):
         # GameObject.cleanup(self)
 
     def update(self,dt,events):#get size, update size if it changes, but update that here
-        for event in events:
-            if event in self.menus.register:
-                self.updateTask = taskMgr.add(self.menus.register[event](),"event")
+        # for event in events:
+            # if event in self.menus.register:
+                # self.updateTask = taskMgr.add(self.menus.register[event](),"event")
         
         for value in self.players.values():
             self.updateTask = taskMgr.add(value.update(dt), "update")

@@ -12,57 +12,33 @@ import math, random
 FRICTION = 150.0
 
 class GameObject():
-    def __init__(self,pos=Vec3(0, 0, 0),modelName="dot",modelAnims="dot",maxHealth=300,maxSpeed=10):
+    def __init__(self,pos=Vec3(0, 0, 0),modelName=None,modelAnims=None,maxHealth=10,maxSpeed=10,maxMana=None,maxStamina=None):
+        if modelAnims is None:
+            self.actor = Actor('models/ball', {
+                    'walk': 'models/bouncing ball'
+                })
+        else:
+            self.actor = modelAnims
         self.state = ActorFSM()
-        self.setPos(modelName, modelAnims, pos)
+        self.setPos(pos)
         self.setSpeedAcc(maxHealth,maxSpeed)
         self.addCollider()
     
     def update(self):
-        speed = self.velocity.length()
-        if speed > self.maxSpeed:
-            self.velocity.normalize()
-            self.velocity *= self.maxSpeed
-            speed = self.maxSpeed
+        pass
 
-        if not self.walking:
-            frictionVal = FRICTION*dt
-            if frictionVal > speed:
-                self.velocity.set(0, 0, 0)
-            else:
-                frictionVec = -self.velocity
-                frictionVec.normalize()
-                frictionVec *= frictionVal
-
-                self.velocity += frictionVec
-
-        self.actor.setPos(self.actor.getPos() + self.velocity*dt)
-
-    def setPos(self, modelName, modelAnims, pos):
-        self.actor = Actor(modelName, modelAnims)
-        self.actor.reparentTo(render)
-        self.actor.setPos(pos)
+    def setPos(self,pos):
+        pass
 
     def setSpeedAcc(self,maxHealth,maxSpeed):
-        self.maxHealth = maxHealth
-        self.health = maxHealth
-
-        self.maxSpeed = maxSpeed
-
-        self.velocity = Vec3(0, 0, 0)
-        self.acceleration = 300.0
-
-        self.moving = False
+        pass
 
     def addCollider(self):
-        colliderNode = CollisionNode(colliderName)
-        colliderNode.addSolid(CollisionSphere(0, 0, 0, 0.3))
-        self.collider = self.actor.attachNewNode(colliderNode)
-        self.collider.setPythonTag("owner", self)
+        pass
 
 class Player(GameObject):
     def __init__(self):
-        GameObject.__init__()
+        GameObject.__init__(self)
 
     def update(self):
         GameObject.update(self, dt)
