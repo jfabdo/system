@@ -19,13 +19,13 @@ class GameObject():
                 })
         else:
             self.actor = modelAnims
-        self.state = ActorFSM()
+        self.state = ActorFSM(self.actor)
         self.setPos(pos)
         self.setSpeedAcc(maxHealth,maxSpeed)
         self.addCollider()
     
     def update(self):
-        pass
+        if self.state.state =
 
     def setPos(self,pos):
         pass

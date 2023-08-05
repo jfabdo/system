@@ -1,7 +1,5 @@
 from random import choice
 import direct.fsm.FSM as FSM
-from Game import GUI
-from GameObject import Actor
 
 welcomescreen = [
     "Welcome, fool",
@@ -31,57 +29,23 @@ class MenuFSM(FSM):
         self.GUI.updateTask = taskMgr.add(self.update, "update")
 
 class ActorFSM(FSM):
-    def __init__(self):
+    def __init__(self,actr):
         FSM.__init__(self, 'ActorState')
         # self.defaultTransitions = {
         #     'Standing' :
         # }
-        GameObject.__init__(self,
-                            Vec3(0, 0, 0),
-                            "dot",
-                              {
-                                  "stand" : "dot",
-                                  "walk" : "dot",
-                                  'jump' : "dot"
-                              },
-                            5,
-                            10,
-                            "player")
-        
-        self.actor.getChild(0).setH(180)
-
-        mask = BitMask32()
-        mask.setBit(1)
-
-        self.collider.node().setIntoCollideMask(mask)
-
-        mask = BitMask32()
-        mask.setBit(1)
-
-        self.collider.node().setFromCollideMask(mask)
-
-        base.pusher.addCollider(self.collider, self.actor)
-        base.cTrav.addCollider(self.collider, base.pusher)
-
-        self.lastMousePos = Vec2(0, 0)
+        if actr == None:
+            print("pass the actor")
+            exit(1)
 
         self.magicstate = MagicFSM(self)
         self.weaponstate = WeaponFSM(self)
     
     def enterStanding(self):
-        standControl = self.actor.getAnimControl("stand")
-        if not standControl.isPlaying():
-            self.actor.stop("walk")
-            self.actor.loop("stand")
+        pass
 
     def enterWalking(self):
-        standControl = self.actor.getAnimControl("stand")
-        if standControl.isPlaying():
-                standControl.stop()
-
-        walkControl = self.actor.getAnimControl("walk")
-        if not walkControl.isPlaying():
-            self.actor.loop("walk")
+        pass
 
     def enterJump(self):
         self.request("Jump")
@@ -111,80 +75,12 @@ class WeaponFSM(FSM):
                 'Block' : [ 'Idle', 'Strike' ],
                 'Away' : [ '' ]
         }
-
-        self.beamModel = loader.loadModel("dot")
-        self.beamModel.reparentTo(self.actor)
-        self.beamModel.setZ(1.5)
-        self.beamModel.setLightOff()
-        self.beamModel.hide()
-
-        self.beamHitModel = loader.loadModel("dot")
-        self.beamHitModel.reparentTo(render)
-        self.beamHitModel.setZ(1.5)
-        self.beamHitModel.setLightOff()
-        self.beamHitModel.hide()
-        self.beamHitPulseRate = 0.15
-        self.beamHitTimer = 0
-
-        self.damagePerSecond = -5.0
     
     def enterIdle(self):
-        if render.hasLight(self.beamHitLightNodePath):
-            render.clearLight(self.beamHitLightNodePath)
-
-        self.beamModel.hide()
-        self.beamHitModel.hide()
-
-        if self.laserSoundNoHit.status() == AudioSound.PLAYING:
-            self.laserSoundNoHit.stop()
-        if self.laserSoundHit.status() == AudioSound.PLAYING:
-            self.laserSoundHit.stop()
+        pass
 
     def enterStrike(self):
-        scoredHit = False
-
-        self.rayQueue.sortEntries()
-        rayHit = self.rayQueue.getEntry(0)
-        hitPos = rayHit.getSurfacePoint(render)
-
-        hitNodePath = rayHit.getIntoNodePath()
-        if hitNodePath.hasPythonTag("owner"):
-            hitObject = hitNodePath.getPythonTag("owner")
-            if not isinstance(hitObject, TrapEnemy):
-                hitObject.alterHealth(self.damagePerSecond*dt)
-                scoredHit = True
-
-
-        beamLength = (hitPos - self.actor.getPos()).length()
-        self.beamModel.setSy(beamLength)
-
-        self.beamModel.show()
-        
-        if scoredHit:
-            if self.laserSoundNoHit.status() == AudioSound.PLAYING:
-                self.laserSoundNoHit.stop()
-            if self.laserSoundHit.status() != AudioSound.PLAYING:
-                self.laserSoundHit.play()
-
-            self.beamHitModel.show()
-
-            self.beamHitModel.setPos(hitPos)
-            self.beamHitLightNodePath.setPos(hitPos + Vec3(0, 0, 0.5))
-
-            if not render.hasLight(self.beamHitLightNodePath):
-                render.setLight(self.beamHitLightNodePath)
-        else:
-            if self.laserSoundHit.status() == AudioSound.PLAYING:
-                self.laserSoundHit.stop()
-            if self.laserSoundNoHit.status() != AudioSound.PLAYING:
-                self.laserSoundNoHit.play()
-
-            if render.hasLight(self.beamHitLightNodePath):
-                render.clearLight(self.beamHitLightNodePath)
-
-            self.beamHitModel.hide()
-        
-        self.request('Idle')
+        pass
     
     def exitStrike(self):
         pass
