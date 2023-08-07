@@ -10,7 +10,7 @@ from direct.gui.DirectGui import *
 
 from Room import makeRoom
 
-# from GameObject import Player
+from GameObject import GameObject
 
 # from menus import Menus
 
@@ -23,8 +23,6 @@ class Game(ShowBase):
         makeRoom()
         # self.setkeys()
         self.setcollisions()
-        
-        self.score = 0
 
         self.players = {}
         self.enemies = {}
@@ -41,7 +39,7 @@ class Game(ShowBase):
         # lens = OrthographicLens()
         # lens.setFilmSize(20, 15)  # Or whatever is appropriate for your scene
         # base.cam.node().setLens(lens)
-        base.camera.setPos(0, 5, 20)
+        # base.camera.setPos(0, 5, 20)
         base.camera.setHpr(0, -70, 0)
 
         slight = Spotlight('slight')

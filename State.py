@@ -1,5 +1,5 @@
 from random import choice
-import direct.fsm.FSM as FSM
+from direct.fsm.FSM import FSM
 
 welcomescreen = [
     "Welcome, fool",
@@ -14,19 +14,20 @@ class MenuFSM(FSM):
             'Playing' : [ 'Escaped', 'Paused' ],
             'Escaped' : [ 'Exited', 'Intro', 'Playing' ],
             'Paused' : [ 'Escaped', 'Playing' ],
-            'Exited' : [ ],
+            'Exited' : [ ]
         }
-        self.GUI = GUI(self)
-        self.GUI.run()
 
     def enterIntro(self):
-        self.GUI.introscreen.show()
+        # self.GUI.introscreen.show()
+        pass
 
     def exitIntro(self):
-        self.GUI.introscreen.hide()
+        # self.GUI.introscreen.hide()
+        pass
 
     def enterPlaying(self):
-        self.GUI.updateTask = taskMgr.add(self.update, "update")
+        # self.GUI.updateTask = taskMgr.add(self.update, "update")
+        pass
 
 class ActorFSM(FSM):
     def __init__(self,actr=None):
