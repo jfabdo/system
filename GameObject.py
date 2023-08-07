@@ -12,10 +12,11 @@ import math, random
 FRICTION = 150.0
 
 class GameObject():
-    def __init__(self,pos=Vec3(0, 0, 0),modelName=None,modelAnims=None,maxHealth=10,maxSpeed=10,maxMana=None,maxStamina=None):
+    def __init__(self,pos=Vec3(0, 0, 0),modelAnims=None,maxHealth=10,maxSpeed=10,maxMana=None,maxStamina=None):
         if modelAnims is None:
             self.actor = Actor('models/ball', {
-                    'walk': 'models/bouncing ball'
+                    'walk': 'models/bouncing ball',
+                    'jump': 'models/jumping ball'
                 })
         else:
             self.actor = modelAnims
@@ -25,7 +26,8 @@ class GameObject():
         self.addCollider()
     
     def update(self):
-        if self.state.state =
+        # if self.state.state =
+        pass
 
     def setPos(self,pos):
         pass
@@ -42,31 +44,6 @@ class Player(GameObject):
 
     def update(self):
         GameObject.update(self, dt)
-
-        if self.keymap['up']:
-            self.state.request('Walking',self.acceleration*dt)
-        if self.keymap['down']:
-            self.state.request('Walking',-self.acceleration*dt)
-        if self.keymap['left']:
-            self.state.request('Walking',-self.acceleration*dt)
-        if self.keymap['right']:
-            self.state.request('Walking',self.acceleration*dt)
-        if self.keymap['weapon']:
-            self.state.request('Weapon')
-        if self.keymap['magic']:
-            self.state.request('Magic')
-        if self.keymap['jump']:
-            self.state.request('Jump')
-        
-        firingVector = Vec3(self.mousePos3D - self.actor.getPos())
-        firingVector2D = firingVector.getXy()
-        firingVector2D.normalize()
-        firingVector.normalize()
-
-        heading = self.yVector.signedAngleDeg(firingVector2D)
-        self.actor.setH(heading)
-        if self.keys["shoot"]:
-            self.state.request("Weapon") #fire the beam
 
 class TheCloud(GameObject):
     def __init__(self):

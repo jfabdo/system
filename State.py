@@ -29,7 +29,7 @@ class MenuFSM(FSM):
         self.GUI.updateTask = taskMgr.add(self.update, "update")
 
 class ActorFSM(FSM):
-    def __init__(self,actr):
+    def __init__(self,actr=None):
         FSM.__init__(self, 'ActorState')
         # self.defaultTransitions = {
         #     'Standing' :
@@ -37,18 +37,37 @@ class ActorFSM(FSM):
         if actr == None:
             print("pass the actor")
             exit(1)
-
+        self.actor = actr
+        print('default state is')
+        print(self.actor.getCurrentAnim())
         self.magicstate = MagicFSM(self)
         self.weaponstate = WeaponFSM(self)
     
     def enterStanding(self):
-        pass
+        self.actor.play('')
+
+    def exitStanding(self):
+        self.actor.stop('')
 
     def enterWalking(self):
-        pass
+        self.actor.loop('walk')
+    
+    def exitWalking(self):
+        self.actor.setPlayRate(3)
+        self.actor.pose('walk',17)
+        self.actor.setPlayRate(1)
 
     def enterJump(self):
-        self.request("Jump")
+        self.actor.setPlayRate(3)
+        self.actor.pose('walk',9)
+        self.actor.setPlayRate(1)
+        self.actor.play('jump')
+
+    def exitJump(self):
+        self.actor.stop('jump')
+        self.actor.setPlayRate(-3)
+        self.actor.play('walk', fromFrame=7, toFrame=1)
+        self.actor.setPlayRate(1)
 
     def enterWeapon(self): #be sure to allow for both hand fighting
         self.weaponstate.request("Strike")
@@ -66,14 +85,14 @@ class ActorFSM(FSM):
         Actor.cleanup()
 
 class WeaponFSM(FSM):
-    def __init__(self):
+    def __init__(self,hand=None):
         FSM.__init__(self, 'WeaponState')
         self.defaultTransitions = {
                 'Draw' : [ 'Idle' ],
                 'Idle' : [ 'Strike', 'Block', 'Away' ],
                 'Strike' : [ 'Idle'],
                 'Block' : [ 'Idle', 'Strike' ],
-                'Away' : [ '' ]
+                'Away' : [ ]
         }
     
     def enterIdle(self):
@@ -92,7 +111,7 @@ class WeaponFSM(FSM):
         self.gameobject.cleanup()
 
 class MagicFSM(FSM):
-    def __init__(self):
+    def __init__(self,magicpoint=None):
         FSM.__init__(self, 'MagicState')
         self.defaultTransitions = {
                 'Idle' : [ 'Charging', 'Away' ],
