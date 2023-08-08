@@ -8,7 +8,7 @@ from panda3d.core import WindowProperties
 
 from direct.gui.DirectGui import *
 
-from Room import makeRoom
+from Room import generaterooms
 
 from GameObject import Player
 
@@ -20,7 +20,7 @@ class Game(ShowBase):
         ShowBase.__init__(self)
         self.apppath = apppath
         self.setupPanda(size)
-        self.rooms = makeRoom()
+        self.rooms = generaterooms()
         self.setscene()
         # self.setkeys()
         self.setcollisions()
@@ -43,10 +43,10 @@ class Game(ShowBase):
         # lens = OrthographicLens()
         # lens.setFilmSize(20, 15)  # Or whatever is appropriate for your scene
         # base.cam.node().setLens(lens)
-        base.camera.setPos(0, 15, 20)
+        base.cam.setPos(0, -15, 20)
         # base.camera.setHpr(0, -70, 0)
-        base.camera.lookAt(0,0,0)
-        base.useDrive()
+        base.cam.lookAt(0,0,0)
+        # base.useDrive()
         slight = Spotlight('slight')
         slight.setColor((1, 1, 1, 1))
         lens = PerspectiveLens()
