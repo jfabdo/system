@@ -8,18 +8,21 @@ from panda3d.core import AudioSound
 from panda3d.core import PointLight
 from State import ActorFSM
 import math, random
+from os.path import abspath
+from sys import path
 
 FRICTION = 150.0
 
 class GameObject():
     def __init__(self,pos=Vec3(0, 0, 0),modelAnims=None,maxHealth=10,maxSpeed=10,maxMana=None,maxStamina=None):
         if modelAnims is None:
-            self.actor = Actor('models/ball', {
-                    'walk': 'models/bouncing ball',
-                    'jump': 'models/jumping ball'
+            self.actor = Actor(path[0]+'/models/ball.bam', {
+                    'walk': path[0]+'/models/bouncing ball.bam',
+                    'jump': path[0]+'/models/jumping ball.bam'
                 })
         else:
             self.actor = modelAnims
+        self.actor.reparentTo(render)
         self.setPos(pos)
         self.setSpeedAcc(maxHealth,maxSpeed)
         self.addCollider()
@@ -41,15 +44,15 @@ class Player(GameObject):
     def __init__(self):
         GameObject.__init__(self)
         self.state = ActorFSM(self.actor)
-
-    def update(self):
+        
+    def update(self,dt):
         GameObject.update(self, dt)
 
 class TheCloud(GameObject):
     def __init__(self):
         pass
 
-    def update(self):
+    def update(self,dt):
         self.runlogic()
 
     def runlogic(self):
@@ -59,7 +62,7 @@ class NPC(GameObject):
     def __init__(self):
         GameObject.__init__()
 
-    def update(self):
+    def update(self,dt):
         self.runlogic()
 
     def runlogic(self):

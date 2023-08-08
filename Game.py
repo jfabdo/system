@@ -10,27 +10,31 @@ from direct.gui.DirectGui import *
 
 from Room import makeRoom
 
-from GameObject import GameObject
+from GameObject import Player
 
 # from menus import Menus
 
 class Game(ShowBase):
-    def __init__(self,manager=None,size=None):
+    def __init__(self,manager=None,size=None,apppath=None):
         # self.state = state
         ShowBase.__init__(self)
+        self.apppath = apppath
         self.setupPanda(size)
+        self.rooms = makeRoom()
         self.setscene()
-        makeRoom()
         # self.setkeys()
         self.setcollisions()
-
+        self.actor = Player()
         self.players = {}
         self.enemies = {}
 
-    def setupPanda(self,size):
+    def setupPanda(self,size=None):
         # self.disableMouse()
         properties = WindowProperties()
-        properties.setSize(1000, 750)
+        if size != None and size[2] > 1000:
+            properties.setSize(size[2], size[3])
+        else:
+            properties.setSize(1000,750)
         self.win.requestProperties(properties)
 
         self.exitFunc = self.cleanup
@@ -39,16 +43,20 @@ class Game(ShowBase):
         # lens = OrthographicLens()
         # lens.setFilmSize(20, 15)  # Or whatever is appropriate for your scene
         # base.cam.node().setLens(lens)
-        # base.camera.setPos(0, 5, 20)
-        base.camera.setHpr(0, -70, 0)
-
+        base.camera.setPos(0, 15, 20)
+        # base.camera.setHpr(0, -70, 0)
+        base.camera.lookAt(0,0,0)
+        base.useDrive()
         slight = Spotlight('slight')
         slight.setColor((1, 1, 1, 1))
         lens = PerspectiveLens()
         slight.setLens(lens)
         slnp = render.attachNewNode(slight)
-        slnp.setPos(0, -10, 10)
-        # slnp.lookAt(myObject) # look at character
+        # slnp.setPos(0, -10, 10)
+        slnp.setPos(0, 15, 20)
+        slnp.lookAt(0, 0, 0)
+
+        # slnp.lookAt(self.Player) # look at character
         render.setLight(slnp)
     
     def setcollisions(self):

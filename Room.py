@@ -3,8 +3,10 @@ from panda3d.core import Geom, GeomTriangles, GeomVertexWriter
 from panda3d.core import GeomNode
 from panda3d.core import LVector3
 
+from random import randrange
+
 roomsize = [20,20,20] #room size x, y, z
-wt = 0.2 #wall thickness
+wt = 0.05 #wall thickness
 
 room = [
     [0,0,0],[0,0,1],[0,1,0],[0,1,1],
@@ -43,7 +45,7 @@ def normalized(*args):
 
 def makeSquare(x1, y1, z1, x2, y2, z2):
     format = GeomVertexFormat.getV3n3cpt2()
-    vdata = GeomVertexData('room', format, Geom.UHDynamic)
+    vdata = GeomVertexData('square', format, Geom.UHDynamic)
 
     vertex = GeomVertexWriter(vdata, 'vertex')
     normal = GeomVertexWriter(vdata, 'normal')
@@ -113,12 +115,11 @@ def getsides():
 def makeRoom(): #include portals to other rooms
     snode = GeomNode('room')
     faces = getsides()
-    offset = 0
-    
-    for i in faces:
-        square = makeSquare((i[0][0]+offset)*roomsize[0],i[0][1]*roomsize[1],i[0][2]*roomsize[2],(i[2][0]+offset)*roomsize[0],i[2][1]*roomsize[1],i[2][2]*roomsize[2])
-        snode.addGeom(square)
-        offset += 1
 
+    for i in faces:
+        square = makeSquare((i[0][0])*roomsize[0],i[0][1]*roomsize[1],i[0][2]*roomsize[2],(i[3][0])*roomsize[0],i[3][1]*roomsize[1],i[3][2]*roomsize[2])
+        snode.addGeom(square)
+    
     room = render.attachNewNode(snode)
     room.setTwoSided(True)
+    return snode

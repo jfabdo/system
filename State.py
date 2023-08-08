@@ -1,4 +1,4 @@
-from random import choice
+# from random import choice
 from direct.fsm.FSM import FSM
 
 welcomescreen = [
@@ -39,8 +39,6 @@ class ActorFSM(FSM):
             print("pass the actor")
             exit(1)
         self.actor = actr
-        print('default state is')
-        print(self.actor.getCurrentAnim())
         self.magicstate = MagicFSM(self)
         self.weaponstate = WeaponFSM(self)
     
