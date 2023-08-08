@@ -5,7 +5,7 @@ from panda3d.core import LVector3
 
 from random import randrange
 
-roomsize = [20,20,20] #room size x, y, z
+roomsize = [160,100,40] #room size x, y, z
 wt = 0.05 #wall thickness
 
 room = [
@@ -31,6 +31,7 @@ def generaterooms():
             roomlist[i] = rooms.attachNewNode(f'room{i}')
             roomlist[i].setPos(x*roomsize[0],y*roomsize[1],0)
             roomlist[i].attachNewNode(room)
+            roomlist[i].setTwoSided(True)
 
     if roomcount < 4:
         return generaterooms()
