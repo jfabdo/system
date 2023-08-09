@@ -121,7 +121,7 @@ def getsides():
 def makeRoom(): #include portals to other rooms
     snode = GeomNode('room')
     faces = getsides()
-    # print(len(faces))
+
     for i in faces:
         square = makeSquare((i[0][0])*roomsize[0],i[0][1]*roomsize[1],i[0][2]*roomsize[2],(i[3][0])*roomsize[0],i[3][1]*roomsize[1],i[3][2]*roomsize[2])
         snode.addGeom(square)
