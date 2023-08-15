@@ -2,10 +2,11 @@ from panda3d.core import GeomVertexFormat, GeomVertexData
 from panda3d.core import Geom, GeomTriangles, GeomVertexWriter
 from panda3d.core import GeomNode,NodePath
 from panda3d.core import LVector3
+from panda3d.core import CollisionNode, CollisionPolygon, Point3
 
 from random import randrange
 
-roomsize = [160,100,40] #room size x, y, z
+roomsize = [30,30,30] #room size x, y, z
 wt = 0.05 #wall thickness
 
 room = [
@@ -16,13 +17,13 @@ room = [
 ]
 
 def generaterooms():
-    rooms = randrange(1,2**16)
+    totalrooms = randrange(2**4,2**16)
     roomlist = []
     for x in [2**y for y in range(16)]:
-        roomlist.append(x & rooms)
+        roomlist.append(x & totalrooms)
     roomcount = 0
     rooms = render.attachNewNode('rooms')
-    room = makeRoom()
+    room,collisions = makeRoom()
     for i in range(len(roomlist)):
         if roomlist[i]:
             roomcount += 1
@@ -31,6 +32,7 @@ def generaterooms():
             roomlist[i] = rooms.attachNewNode(f'room{i}')
             roomlist[i].setPos(x*roomsize[0],y*roomsize[1],0)
             roomlist[i].attachNewNode(room)
+            collisions.reparentTo(roomlist[i])
             roomlist[i].setTwoSided(True)
 
     if roomcount < 4:
@@ -82,9 +84,9 @@ def makeSquare(x1, y1, z1, x2, y2, z2):
         normal.addData3(normalized(2 * x1 - 1, 2 * y1 - 1, 2 * z2 - 1))
 
     # adding different colors to the vertex for visibility
-    color.addData4f(1.0, 0.0, 1.0, 1.0)
-    color.addData4f(1.0, 0.0, 1.0, 1.0)
-    color.addData4f(1.0, 0.0, 1.0, 1.0)
+    color.addData4f(1.0, 0.0, 0.0, 1.0)
+    color.addData4f(0.0, 1.0, 0.0, 1.0)
+    color.addData4f(0.0, 0.0, 1.0, 1.0)
     color.addData4f(1.0, 0.0, 1.0, 1.0)
 
     texcoord.addData2f(0.0, 1.0)
@@ -120,10 +122,20 @@ def getsides():
 
 def makeRoom(): #include portals to other rooms
     snode = GeomNode('room')
+    cnode = NodePath('walkable')
     faces = getsides()
 
     for i in faces:
         square = makeSquare((i[0][0])*roomsize[0],i[0][1]*roomsize[1],i[0][2]*roomsize[2],(i[3][0])*roomsize[0],i[3][1]*roomsize[1],i[3][2]*roomsize[2])
         snode.addGeom(square)
-        
-    return snode
+    
+    for i in faces[5:10]:
+        quad = CollisionPolygon(Point3(i[0][0], i[0][1], i[0][2]), Point3(i[1][0], i[1][1], i[1][2]),
+                            Point3(i[2][0], i[2][1], i[2][2]), Point3(i[3][0], i[3][1], i[3][2]))
+        if 1 not in i[:][2]:
+            nodepath = cnode.attachNewNode(CollisionNode('floor'))
+        else:
+            nodepath = cnode.attachNewNode(CollisionNode('wall'))
+        nodepath.node().addSolid(quad)
+
+    return snode, cnode

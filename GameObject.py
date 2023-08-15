@@ -3,7 +3,6 @@ from direct.actor.Actor import Actor
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.OnscreenImage import OnscreenImage
 from panda3d.core import NodePath
-from panda3d.core import CollisionSphere, CollisionNode, CollisionRay, CollisionSegment, CollisionHandlerQueue
 from panda3d.core import TextNode
 from panda3d.core import AudioSound
 from panda3d.core import PointLight
@@ -76,9 +75,9 @@ class GameObject():
         pass
 
 class Player(GameObject):
-    def __init__(self):
+    def __init__(self,pos=[0,0,0]):
         playernode = NodePath('PlayerPos')
-        playernode.setPos(0,0,0)
+        playernode.setPos(pos[0],pos[1],pos[2])
         playernode.reparentTo(render)
         GameObject.__init__(self,parent=playernode,move=playernode)
         self.state = ActorFSM(self.actor)
