@@ -6,6 +6,7 @@ from panda3d.core import NodePath
 from panda3d.core import TextNode
 from panda3d.core import AudioSound
 from panda3d.core import PointLight
+from panda3d.core import CollisionNode,CollisionTube
 from State import ActorFSM
 import math, random
 from os.path import abspath
@@ -73,6 +74,9 @@ class GameObject():
 
     def addCollider(self):
         pass
+        # capsule = CollisionTube(ax, ay, az, bx, by, bz, radius)
+        # cnodePath = avatar.attachNewNode(CollisionNode('gameobject'))
+        # cnodePath.node().addSolid(cs)
 
 class Player(GameObject):
     def __init__(self,pos=[0,0,0]):

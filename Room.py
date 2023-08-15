@@ -107,7 +107,7 @@ def makeSquare(x1, y1, z1, x2, y2, z2):
 
 def getsides():
     sides = []
-    for h in range(2):
+    for h in range(1):
         for i in range(h*8,2**(3+h)-3):
             for j in range(i+1,2**(3+h)-2):
                 for k in range(j+1,2**(3+h)-1):
@@ -133,9 +133,8 @@ def makeRoom(): #include portals to other rooms
         quad = CollisionPolygon(Point3(i[0][0], i[0][1], i[0][2]), Point3(i[1][0], i[1][1], i[1][2]),
                             Point3(i[2][0], i[2][1], i[2][2]), Point3(i[3][0], i[3][1], i[3][2]))
         if 1 not in i[:][2]:
-            nodepath = cnode.attachNewNode(CollisionNode('floor'))
-        else:
-            nodepath = cnode.attachNewNode(CollisionNode('wall'))
+            continue
+        nodepath = cnode.attachNewNode(CollisionNode('wall'))
         nodepath.node().addSolid(quad)
 
     return snode, cnode
