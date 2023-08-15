@@ -2,8 +2,8 @@
 from direct.fsm.FSM import FSM
 
 welcomescreen = [
-    "Welcome, fool",
-    "Welcome to the dungeons"
+    'Enter, fool',
+    'Welcome to the dungeons'
 ]
 
 class MenuFSM(FSM):
@@ -26,7 +26,7 @@ class MenuFSM(FSM):
         pass
 
     def enterPlaying(self):
-        # self.GUI.updateTask = taskMgr.add(self.update, "update")
+        # self.GUI.updateTask = taskMgr.add(self.update, 'update')
         pass
 
 class ActorFSM(FSM):
@@ -36,14 +36,14 @@ class ActorFSM(FSM):
         #     'Standing' :
         # }
         if actr == None:
-            print("pass the actor")
+            print('pass the actor')
             exit(1)
         self.actor = actr
         self.magicstate = MagicFSM(self)
         self.weaponstate = WeaponFSM(self)
     
     def enterStanding(self):
-        self.actor.play('')
+        self.actor.loop('')
 
     def exitStanding(self):
         self.actor.stop('')
@@ -52,27 +52,19 @@ class ActorFSM(FSM):
         self.actor.loop('walk')
     
     def exitWalking(self):
-        self.actor.setPlayRate(3)
-        self.actor.pose('walk',17)
-        self.actor.setPlayRate(1)
+        self.actor.pose('walk',1)
 
     def enterJump(self):
-        self.actor.setPlayRate(3)
-        self.actor.pose('walk',9)
-        self.actor.setPlayRate(1)
-        self.actor.play('jump')
+        self.actor.loop('')
 
     def exitJump(self):
-        self.actor.stop('jump')
-        self.actor.setPlayRate(-3)
-        self.actor.play('walk', fromFrame=7, toFrame=1)
-        self.actor.setPlayRate(1)
+        self.actor.stop('')
 
     def enterWeapon(self): #be sure to allow for both hand fighting
-        self.weaponstate.request("Strike")
+        self.weaponstate.request('Strike')
     
     def enterMagic(self):
-        self.magicstate.request("Charging")
+        self.magicstate.request('Charging')
 
     def enterHit(self):
         pass
@@ -126,10 +118,10 @@ class MagicFSM(FSM):
     def enterCharging(self):
         #hold off until the button is released
         self.game
-        self.request("Firing")
+        self.request('Firing')
 
     def enterFiring(self):
-        self.request("Hit")
+        self.request('Hit')
 
     def enterHit(self):
         self.request('Idle')
