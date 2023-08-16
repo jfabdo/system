@@ -12,6 +12,7 @@ import math, random
 from os.path import abspath
 from sys import path
 from Input import Movement
+from open_source.updatepos import updatepos
 
 FRICTION = 150.0
 
@@ -44,24 +45,7 @@ class GameObject():
         # self.collider.setPythonTag("owner", self)
     
     def update(self,dt):
-        speed = self.velocity.length()
-        if speed > self.maxSpeed:
-            self.velocity.normalize()
-            self.velocity *= self.maxSpeed
-            speed = self.maxSpeed
-
-        if self.state.state == 'Walking':
-            frictionVal = FRICTION*dt
-            if frictionVal > speed:
-                self.velocity.set(0, 0, 0)
-            else:
-                frictionVec = -self.velocity
-                frictionVec.normalize()
-                frictionVec *= frictionVal
-
-                self.velocity += frictionVec
-
-        self.move.setPos(self.move.getPos() + self.velocity*dt)
+        updatepos(self.move,self.velocity,self.maxSpeed,FRICTION,self.state.state,dt)
 
     def setSpeedAcc(self,maxHealth,maxSpeed):
         self.maxSpeed = maxSpeed
@@ -73,10 +57,9 @@ class GameObject():
         self.health = maxHealth
 
     def addCollider(self):
-        pass
-        # capsule = CollisionTube(ax, ay, az, bx, by, bz, radius)
-        # cnodePath = avatar.attachNewNode(CollisionNode('gameobject'))
-        # cnodePath.node().addSolid(cs)
+        capsule = CollisionTube(0, 0, 2, 0, 0, 4, 2)
+        cnodePath = self.move.attachNewNode(CollisionNode('gameobject'))
+        cnodePath.node().addSolid(capsule)
 
 class Player(GameObject):
     def __init__(self,pos=[0,0,0]):
