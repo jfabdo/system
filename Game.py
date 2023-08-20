@@ -44,6 +44,7 @@ class Game(ShowBase):
         slnp.lookAt(0, 0, 0)
         # slnp.lookAt(self.Player) # look at character
         render.setLight(slnp)
+        base.setBackgroundColor(0,0,0)
 
     def playGame(self,size):
         self.setupPanda(size)

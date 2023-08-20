@@ -45,9 +45,6 @@ def generaterooms():
 #             return True
 #     return False
 
-# You can't normalize inline so this is a helper function
-
-
 # def getsides():
 #     sides = []
 #     for h in range(1):
@@ -66,7 +63,7 @@ def generaterooms():
 def getsides():
     sides = [
         [0,1,2,3],
-        # [0,2,4,5],
+        [0,2,4,5],
         [2,3,5,7],
         [0,1,4,6],
         [4,5,6,7]
