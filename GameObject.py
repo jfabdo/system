@@ -3,15 +3,16 @@ from direct.actor.Actor import Actor
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.OnscreenImage import OnscreenImage
 from panda3d.core import NodePath
-from panda3d.core import CollisionSphere, CollisionNode, CollisionRay, CollisionSegment, CollisionHandlerQueue
 from panda3d.core import TextNode
 from panda3d.core import AudioSound
 from panda3d.core import PointLight
+from panda3d.core import CollisionNode,CollisionSphere
 from State import ActorFSM
 import math, random
 from os.path import abspath
 from sys import path
 from Input import Movement
+from open_source.updatepos import updatepos
 
 FRICTION = 150.0
 
@@ -37,6 +38,7 @@ class GameObject():
         # self.actor = Actor(modelName, modelAnims)
         # self.actor.reparentTo(render)
         self.actor.setPos(pos)
+        self.actor.setDepthTest(False)
 
         # colliderNode = CollisionNode(colliderName)
         # colliderNode.addSolid(CollisionSphere(0, 0, 0, 0.3))
@@ -44,24 +46,7 @@ class GameObject():
         # self.collider.setPythonTag("owner", self)
     
     def update(self,dt):
-        speed = self.velocity.length()
-        if speed > self.maxSpeed:
-            self.velocity.normalize()
-            self.velocity *= self.maxSpeed
-            speed = self.maxSpeed
-
-        if self.state.state == 'Walking':
-            frictionVal = FRICTION*dt
-            if frictionVal > speed:
-                self.velocity.set(0, 0, 0)
-            else:
-                frictionVec = -self.velocity
-                frictionVec.normalize()
-                frictionVec *= frictionVal
-
-                self.velocity += frictionVec
-
-        self.move.setPos(self.move.getPos() + self.velocity*dt)
+        updatepos(self.move,self.velocity,self.maxSpeed,FRICTION,self.state.state,dt)
 
     def setSpeedAcc(self,maxHealth,maxSpeed):
         self.maxSpeed = maxSpeed
@@ -73,12 +58,14 @@ class GameObject():
         self.health = maxHealth
 
     def addCollider(self):
-        pass
+        capsule = CollisionSphere(0, 0, 3, 3)
+        cnodePath = self.move.attachNewNode(CollisionNode('gameobject'))
+        cnodePath.node().addSolid(capsule)
 
 class Player(GameObject):
-    def __init__(self):
+    def __init__(self,pos=[0,0,0]):
         playernode = NodePath('PlayerPos')
-        playernode.setPos(0,0,0)
+        playernode.setPos(pos[0],pos[1],pos[2])
         playernode.reparentTo(render)
         GameObject.__init__(self,parent=playernode,move=playernode)
         self.state = ActorFSM(self.actor)

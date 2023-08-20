@@ -30,9 +30,9 @@ class Game(ShowBase):
         
     #sets the lens and spotlight
     def setscene(self):
-        lens = OrthographicLens()
-        lens.setFilmSize(20, 15)
-        base.cam.node().setLens(lens)
+        # lens = OrthographicLens()
+        # lens.setFilmSize(20, 15)
+        # base.cam.node().setLens(lens)
         
         slight = Spotlight('slight')
         slight.setColor((1, 1, 1, 1))
@@ -44,6 +44,7 @@ class Game(ShowBase):
         slnp.lookAt(0, 0, 0)
         # slnp.lookAt(self.Player) # look at character
         render.setLight(slnp)
+        base.setBackgroundColor(0,0,0)
 
     def playGame(self,size):
         self.setupPanda(size)
