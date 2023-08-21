@@ -11,7 +11,7 @@ Run the following commands from repo root as needed:
     $ bin/init
     ```
 
-2. Launchthe game
+2. Launch the game
     ```
     $ bin/play
     ```
