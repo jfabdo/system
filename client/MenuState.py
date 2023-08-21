@@ -1,4 +1,8 @@
 from direct.fsm.FSM import FSM
+from collections import deque
+
+inqueue = deque()
+outqueue = deque()
 
 welcomescreen = [
     'Enter, fool',
@@ -36,6 +40,8 @@ class GameFSM(FSM):
         }
     
     #start up server on network thread, have the server read the network stack
+    # enter sets up panda, gets everything from server, starts processing queue on a new thread
+    # start processing queue, stuff from server
     def enterSinglePlayer(self):
         pass
     
