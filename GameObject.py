@@ -11,7 +11,7 @@ from State import ActorFSM
 import math, random
 from os.path import abspath
 from sys import path
-from Input import Movement
+from client.Input import Movement
 from open_source.updatepos import updatepos
 
 FRICTION = 150.0
