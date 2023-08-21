@@ -1,33 +1,6 @@
 # from random import choice
 from direct.fsm.FSM import FSM
 
-welcomescreen = [
-    'Enter, fool',
-    'Welcome to the dungeons'
-]
-
-class MenuFSM(FSM):
-    def __init__(self):
-        FSM.__init__(self, 'MenuState')
-        self.defaultTransitions = {
-            'Intro' : [ 'Exited', 'Playing' ],
-            'Playing' : [ 'Escaped', 'Paused' ],
-            'Escaped' : [ 'Exited', 'Intro', 'Playing' ],
-            'Paused' : [ 'Escaped', 'Playing' ],
-            'Exited' : [ ]
-        }
-
-    def enterIntro(self):
-        # self.GUI.introscreen.show()
-        pass
-
-    def exitIntro(self):
-        # self.GUI.introscreen.hide()
-        pass
-
-    def enterPlaying(self):
-        # self.GUI.updateTask = taskMgr.add(self.update, 'update')
-        pass
 
 class ActorFSM(FSM):
     def __init__(self,actr=None):
