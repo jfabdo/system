@@ -7,8 +7,6 @@ from open_source.makesquare import makeSquare
 roomsize = [30,30,30] #room size x, y, z
 wt = 0.05 #wall thickness
 
-
-
 room = [
     [0,0,0],[0,0,1],[0,1,0],[0,1,1],
     [1,0,0],[1,0,1],[1,1,0],[1,1,1],
