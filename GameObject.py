@@ -17,10 +17,7 @@ FRICTION = 150.0
 class GameObject():
     def __init__(self,pos=Vec3(0, 0, 0),modelName='ball',modelAnims=None,maxHealth=20,maxSpeed=20,maxMana=None,maxStamina=None,parent=None,move=None):
         if modelAnims is None:
-            self.actor = Actor(path[0]+'/models/ball.bam', {
-                    'walk': path[0]+'/models/bouncing ball.bam',
-                    'jump': path[0]+'/models/jumping ball.bam'
-                })
+            self.actor = None
         else:
             self.actor = modelAnims
         if not move:
