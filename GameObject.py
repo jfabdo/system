@@ -8,8 +8,6 @@ from panda3d.core import AudioSound
 from panda3d.core import PointLight
 from panda3d.core import CollisionNode,CollisionSphere
 from State import ActorFSM
-import math, random
-from os.path import abspath
 from sys import path
 from Input import Movement
 from open_source.updatepos import updatepos
